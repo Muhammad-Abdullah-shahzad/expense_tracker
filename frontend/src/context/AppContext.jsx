@@ -32,7 +32,7 @@ const DEFAULT_BUDGETS = {
   miscellaneous: 13925
 };
 
-const API_BASE = 'http://localhost:5001/api';
+const API_BASE = 'http://localhost:5000/api';
 
 export const AppProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(() => {
@@ -100,7 +100,7 @@ export const AppProvider = ({ children }) => {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       };
-      
+
       // Fetch user profile (gets primaryCurrency and budgets)
       const userRes = await fetch(`${API_BASE}/auth/me`, { headers });
       if (userRes.ok) {
