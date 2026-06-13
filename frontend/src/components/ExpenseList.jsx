@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { 
-  Edit, 
-  Trash2, 
-  ChevronLeft, 
-  ChevronRight, 
-  Plus, 
-  Info 
+import {
+  Edit,
+  Trash2,
+  ChevronLeft,
+  ChevronRight,
+  Plus,
+  Info
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
@@ -32,12 +32,12 @@ export default function ExpenseList({ onEditClick, onAddClick, searchTerm }) {
     // 3. Time range Filter Match
     const expDate = new Date(exp.date);
     const today = new Date();
-    today.setHours(0,0,0,0);
-    
+    today.setHours(0, 0, 0, 0);
+
     let timeMatch = true;
     if (timeFilter === 'today') {
       const compare = new Date();
-      compare.setHours(0,0,0,0);
+      compare.setHours(0, 0, 0, 0);
       timeMatch = new Date(exp.date + 'T00:00:00').getTime() === compare.getTime();
     } else if (timeFilter === 'week') {
       const compare = new Date();
@@ -54,11 +54,11 @@ export default function ExpenseList({ onEditClick, onAddClick, searchTerm }) {
   const sortedExpenses = [...filteredExpenses].sort((a, b) => {
     if (sortBy === 'date-desc') return new Date(b.date) - new Date(a.date);
     if (sortBy === 'date-asc') return new Date(a.date) - new Date(b.date);
-    
+
     // Sort by converted amount in current active currency
     const amountA = convertCurrency(a.amount, a.currency, primaryCurrency);
     const amountB = convertCurrency(b.amount, b.currency, primaryCurrency);
-    
+
     if (sortBy === 'amount-desc') return amountB - amountA;
     if (sortBy === 'amount-asc') return amountA - amountB;
     return 0;
@@ -84,15 +84,15 @@ export default function ExpenseList({ onEditClick, onAddClick, searchTerm }) {
 
   return (
     <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 flex flex-col gap-4 shadow-sm animate-slide-up">
-      
+
       {/* Search & Actions Header Row */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-zinc-200 dark:border-zinc-800 pb-4">
         <div>
           <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-50 tracking-tight">Ledger Records</h3>
           <span className="text-[10px] text-zinc-500 font-semibold uppercase tracking-wider block mt-0.5">Browse transaction histories</span>
         </div>
-        
-        <button 
+
+        <button
           onClick={onAddClick}
           className="bg-zinc-900 dark:bg-zinc-50 hover:bg-zinc-800 dark:hover:bg-zinc-200 active:scale-95 text-white dark:text-zinc-950 text-xs font-bold px-4 py-2 rounded-lg flex items-center gap-1.5 shadow-sm transition-all"
         >
@@ -103,13 +103,13 @@ export default function ExpenseList({ onEditClick, onAddClick, searchTerm }) {
 
       {/* Filter and sorting deck */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950/40">
-        
+
         {/* Category Filter dropdown */}
         <div>
           <label className="text-[9px] font-extrabold text-zinc-600 dark:text-zinc-500 uppercase tracking-widest block mb-1.5">
             Category
           </label>
-          <select 
+          <select
             value={categoryFilter}
             onChange={(e) => { setCategoryFilter(e.target.value); setCurrentPage(1); }}
             className="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg text-zinc-800 dark:text-zinc-200 focus:border-zinc-300 dark:focus:border-zinc-700 outline-none px-3 py-1.5 text-xs cursor-pointer"
@@ -128,7 +128,7 @@ export default function ExpenseList({ onEditClick, onAddClick, searchTerm }) {
           <label className="text-[9px] font-extrabold text-zinc-600 dark:text-zinc-500 uppercase tracking-widest block mb-1.5">
             Time Interval
           </label>
-          <select 
+          <select
             value={timeFilter}
             onChange={(e) => { setTimeFilter(e.target.value); setCurrentPage(1); }}
             className="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg text-zinc-800 dark:text-zinc-200 focus:border-zinc-300 dark:focus:border-zinc-700 outline-none px-3 py-1.5 text-xs cursor-pointer"
@@ -145,7 +145,7 @@ export default function ExpenseList({ onEditClick, onAddClick, searchTerm }) {
           <label className="text-[9px] font-extrabold text-zinc-600 dark:text-zinc-500 uppercase tracking-widest block mb-1.5">
             Sort Options
           </label>
-          <select 
+          <select
             value={sortBy}
             onChange={(e) => { setSortBy(e.target.value); setCurrentPage(1); }}
             className="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg text-zinc-800 dark:text-zinc-200 focus:border-zinc-300 dark:focus:border-zinc-700 outline-none px-3 py-1.5 text-xs cursor-pointer"
@@ -175,7 +175,7 @@ export default function ExpenseList({ onEditClick, onAddClick, searchTerm }) {
             <tbody>
               {currentItems.map((item) => (
                 <tr key={item.id} className="border-b border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/25 transition-colors">
-                  
+
                   {/* Date column */}
                   <td className="px-3 py-2 font-semibold text-zinc-800 dark:text-zinc-200 whitespace-nowrap">
                     {new Date(item.date).toLocaleDateString('en-US', {
@@ -217,15 +217,15 @@ export default function ExpenseList({ onEditClick, onAddClick, searchTerm }) {
                   {/* Operational actions buttons */}
                   <td className="px-3 py-2 text-center">
                     <div className="flex items-center justify-center gap-1.5">
-                      <button 
+                      <button
                         onClick={() => onEditClick(item.id)}
                         className="p-1.5 rounded-lg bg-zinc-100 dark:bg-zinc-800/40 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors"
                       >
                         <Edit size={13} />
                       </button>
-                      <button 
+                      <button
                         onClick={() => {
-                          if(confirm('Are you sure you want to delete this transaction record?')) {
+                          if (confirm('Are you sure you want to delete this transaction record?')) {
                             deleteExpense(item.id);
                           }
                         }}
@@ -261,29 +261,28 @@ export default function ExpenseList({ onEditClick, onAddClick, searchTerm }) {
           </span>
 
           <div className="flex items-center gap-1">
-            <button 
+            <button
               onClick={() => paginate(currentPage - 1)}
               disabled={currentPage === 1}
               className="p-2 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 disabled:opacity-30 disabled:hover:bg-zinc-50 dark:disabled:hover:bg-zinc-950 disabled:hover:text-zinc-400 transition-colors"
             >
               <ChevronLeft size={13} />
             </button>
-            
+
             {Array.from({ length: totalPages }).map((_, idx) => (
               <button
                 key={idx}
                 onClick={() => paginate(idx + 1)}
-                className={`w-7.5 h-7.5 rounded-lg text-xs font-bold transition-all ${
-                  currentPage === idx + 1 
-                    ? 'bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-950' 
+                className={`w-7.5 h-7.5 rounded-lg text-xs font-bold transition-all ${currentPage === idx + 1
+                    ? 'bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-950'
                     : 'border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400'
-                }`}
+                  }`}
               >
                 {idx + 1}
               </button>
             ))}
 
-            <button 
+            <button
               onClick={() => paginate(currentPage + 1)}
               disabled={currentPage === totalPages}
               className="p-2 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 disabled:opacity-30 disabled:hover:bg-zinc-50 dark:disabled:hover:bg-zinc-950 disabled:hover:text-zinc-400 transition-colors"

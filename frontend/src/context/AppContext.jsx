@@ -338,6 +338,8 @@ export const AppProvider = ({ children }) => {
       convertCurrency,
       importBackupData,
       addLog,
+      setActivityLogs,
+      apiFetch,
       theme,
       toggleTheme
     }}>

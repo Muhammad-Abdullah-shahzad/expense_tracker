@@ -44,4 +44,16 @@ router.post('/', protect, async (req, res) => {
   }
 });
 
+// @desc    Delete all activity logs for user
+// @route   DELETE /api/logs
+// @access  Private
+router.delete('/', protect, async (req, res) => {
+  try {
+    await ActivityLog.deleteMany({ user: req.user.id });
+    res.json({ message: 'All logs cleared' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 export default router;
