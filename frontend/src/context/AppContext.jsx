@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 import { toast } from 'sonner';
 
 const AppContext = createContext();
@@ -205,6 +205,32 @@ export const AppProvider = ({ children }) => {
     setCurrentUser(null);
   };
 
+  const updateProfile = async ({ name, email, currentPassword, newPassword } = {}) => {
+    try {
+      const body = {};
+      if (name) body.name = name;
+      if (email) body.email = email;
+      if (currentPassword) body.currentPassword = currentPassword;
+      if (newPassword) body.newPassword = newPassword;
+
+      const data = await apiFetch('/auth/profile', {
+        method: 'PUT',
+        body: JSON.stringify(body)
+      });
+
+      const updated = { name: data.name, email: data.email, id: data.id };
+      setCurrentUser(updated);
+      localStorage.setItem('et_user', JSON.stringify(updated));
+      if (data.token) localStorage.setItem('et_token', data.token);
+
+      await addLog('Profile Updated', 'Account information was changed.', 'update');
+      toast.success(newPassword ? 'Password updated successfully!' : 'Profile updated successfully!');
+      return { success: true };
+    } catch (err) {
+      return { success: false, message: err.message };
+    }
+  };
+
   // Expense Management
   const addExpense = async (expenseData) => {
     try {
@@ -331,6 +357,7 @@ export const AppProvider = ({ children }) => {
       login,
       register,
       logout,
+      updateProfile,
       addExpense,
       updateExpense,
       deleteExpense,

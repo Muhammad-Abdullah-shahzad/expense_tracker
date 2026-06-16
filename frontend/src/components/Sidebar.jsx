@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
-import { 
-  LayoutDashboard, 
-  Receipt, 
-  Wallet, 
-  History, 
-  Database, 
-  FileText, 
-  LogOut, 
+import {
+  LayoutDashboard,
+  Receipt,
+  Wallet,
+  History,
+  Database,
+  FileText,
+  LogOut,
   TrendingUp,
   Menu,
   X,
   Sun,
-  Moon
+  Moon,
+  UserCircle
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
@@ -26,6 +27,7 @@ export default function Sidebar({ activeTab, setActiveTab, isExpanded, setIsExpa
     { id: 'logs', name: 'Activity Log', icon: History },
     { id: 'backup', name: 'Backup & Share', icon: Database },
     { id: 'reports', name: 'Reports', icon: FileText },
+    { id: 'profile', name: 'Profile', icon: UserCircle },
   ];
 
   const handleNav = (tabId) => {
@@ -112,15 +114,15 @@ export default function Sidebar({ activeTab, setActiveTab, isExpanded, setIsExpa
             </span>
           </button>
           
-          <div className="flex items-center gap-3 px-2 mt-2" title={currentUser?.email}>
+          <button onClick={() => handleNav('profile')} className="flex items-center gap-3 px-2 mt-2 w-full text-left hover:bg-zinc-100 dark:hover:bg-zinc-800/40 rounded-lg py-1.5 transition-colors group" title="View Profile">
             <div className="w-9 h-9 shrink-0 rounded-lg bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-200 flex items-center justify-center font-bold uppercase text-xs">
               {currentUser?.name?.substring(0, 2) || 'US'}
             </div>
             <div className={`overflow-hidden transition-opacity duration-200 ${!isExpanded ? 'lg:hidden' : 'block'}`}>
-              <h4 className="text-xs font-semibold text-zinc-800 dark:text-zinc-200 truncate">{currentUser?.name}</h4>
+              <h4 className="text-xs font-semibold text-zinc-800 dark:text-zinc-200 truncate group-hover:text-zinc-900 dark:group-hover:text-zinc-50">{currentUser?.name}</h4>
               <p className="text-[10px] text-zinc-500 truncate mt-0.5">{currentUser?.email}</p>
             </div>
-          </div>
+          </button>
           <button 
             onClick={logout}
             className="flex items-center gap-3 px-4 py-2 rounded-lg text-xs font-semibold text-red-500 dark:text-red-400 hover:text-red-600 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-950/20 transition-all w-full text-left"

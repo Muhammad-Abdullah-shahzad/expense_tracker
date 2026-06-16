@@ -19,6 +19,7 @@ import ExpenseList from './components/ExpenseList';
 import BackupRestore from './components/BackupRestore';
 import ActivityLog from './components/ActivityLog';
 import ReportGenerator from './components/ReportGenerator';
+import Profile from './components/Profile';
 
 export default function App() {
   const { 
@@ -308,6 +309,8 @@ export default function App() {
         return <BackupRestore />;
       case 'reports':
         return <ReportGenerator />;
+      case 'profile':
+        return <Profile />;
       default:
         return <div className="text-zinc-600 dark:text-zinc-400 p-8 text-center bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl">Tab not implemented</div>;
     }

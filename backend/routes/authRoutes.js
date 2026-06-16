@@ -105,4 +105,39 @@ router.put('/currency', protect, async (req, res) => {
   }
 });
 
+// @desc    Update user profile (name, email, password)
+// @route   PUT /api/auth/profile
+// @access  Private
+router.put('/profile', protect, async (req, res) => {
+  const { name, email, currentPassword, newPassword } = req.body;
+
+  try {
+    const user = await User.findById(req.user._id).select('+password');
+
+    if (name) user.name = name;
+    if (email) user.email = email;
+
+    if (newPassword) {
+      if (!currentPassword) {
+        return res.status(400).json({ message: 'Current password is required to set a new password' });
+      }
+      const isMatch = await user.matchPassword(currentPassword);
+      if (!isMatch) {
+        return res.status(401).json({ message: 'Current password is incorrect' });
+      }
+      user.password = newPassword;
+    }
+
+    const updated = await user.save();
+    res.json({
+      id: updated.id,
+      name: updated.name,
+      email: updated.email,
+      token: generateToken(updated.id)
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 export default router;
